@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: douban
+# key: db
+# --
+{{< douban $1 >}}
+$0

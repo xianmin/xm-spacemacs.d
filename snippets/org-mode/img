@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: img
+# key: img
+# --
+[[~/Dropbox/Write/blog/static/$1]]
+$0

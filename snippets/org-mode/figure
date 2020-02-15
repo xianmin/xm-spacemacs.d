@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: figure
+# key: f
+# --
+{{< figure src="/image/$1" title="$2" >}}
+$0

@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: music
+# key: music
+# --
+{{% music "$0" %}}
