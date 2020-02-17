@@ -86,5 +86,3 @@ See `org-capture-templates' for more information."
 ;; (org-set-emph-re 'org-emphasis-regexp-components org-emphasis-regexp-components)
 
 
-;; 
-;; (setq org-format-latex-options (plist-put org-format-latex-options :scale 2.0))
