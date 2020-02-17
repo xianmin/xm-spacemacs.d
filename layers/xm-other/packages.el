@@ -15,6 +15,7 @@
     (auto-save :location local)
     (company-english-helper :location local)
     window-purpose
+    multiple-cursors
     ))
 
 (defun xm-other/init-cheat-sh ()
@@ -43,5 +44,36 @@
   (progn
     (purpose-mode)
     )))
+
+(defun xm-other/init-multiple-cursors ()
+  (use-package multiple-cursors
+    ;; :defer t
+    :bind
+    (:map mc/keymap ("<return>" . nil))
+    :init
+    (progn
+      (spacemacs/declare-prefix "sm" "multiple-cursors")
+      (spacemacs/declare-prefix "sms" "specials")
+      (spacemacs/set-leader-keys
+        "sma" 'mc/mark-all-dwim
+        "smb" 'mc/mark-all-like-this
+        "smm" 'mc/mark-more-like-this-extended
+        "smr" 'mc/edit-lines
+        "smsl" 'mc/insert-letters
+        "smsm" 'mc/mark-sgml-tag-pair
+        "smsn" 'mc/insert-numbers
+        "smsr" 'set-rectangular-region-anchor
+        "smss" 'mc/sort-regions
+        "smst" 'mc/reverse-regions)
+      (setq mc/always-run-for-all t)
+      ;; (define-key mc/keymap (kbd "<return>") nil)
+      (global-set-key (kbd "C-M-<mouse-1>") 'mc/add-cursor-on-click)
+      (global-set-key (kbd "C-M-<up>") 'mc/mark-previous-like-this)
+      (global-set-key (kbd "C-M-<down>") 'mc/mark-next-like-this)
+      (with-eval-after-load 'multiple-cursors-core
+        (add-to-list 'mc/cmds-to-run-once 'helm-M-x)
+        (add-to-list 'mc/cmds-to-run-once 'counsel-M-x)
+        (add-to-list 'mc/cmds-to-run-once 'spacemacs/default-pop-shell)
+        ))))
 
 ;;; packages.el ends here
