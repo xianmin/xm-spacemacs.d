@@ -15,7 +15,8 @@
     fcitx
     wc-mode
     writegood-mode
-    (chinese-font :location local)
+    ;;    (chinese-font :location local)
+    cnfonts
     ))
 
 (defun xm-write/init-writeroom-mode ()
@@ -49,9 +50,22 @@
     :init
     ))
 
-(defun xm-write/init-chinese-font ()
-  (use-package chinese-font
+;; (defun xm-write/init-chinese-font ()
+;;   (use-package chinese-font
+;;     :init
+;;     ))
+
+(defun xm-write/init-cnfonts ()
+  (use-package cnfonts
     :init
+      ;; 让 cnfonts 随着 Emacs 自动生效。
+      (cnfonts-enable)
+      ;; 让 spacemacs mode-line 中的 Unicode 图标正确显示。
+      (cnfonts-set-spacemacs-fallback-fonts)
+      (setq cnfonts-directory "~/Dotfiles/emacs/xm-spacemacs.d/layers/xm-write/cnfonts")
+      (setq cnfonts-use-face-font-rescale t)
+      (global-set-key (kbd "C-=") 'cnfonts-increase-fontsize)
+      (global-set-key (kbd "C--") 'cnfonts-decrease-fontsize)
     ))
 
 ;;; packages.el ends here
