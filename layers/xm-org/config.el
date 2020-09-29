@@ -84,5 +84,3 @@ See `org-capture-templates' for more information."
 ;; (setcar org-emphasis-regexp-components " \t('\"{[:alpha:]")
 ;; (setcar (nthcdr 1 org-emphasis-regexp-components) "[:alpha:]- \t.,:!?;'\")}\\")
 ;; (org-set-emph-re 'org-emphasis-regexp-components org-emphasis-regexp-components)
-
-

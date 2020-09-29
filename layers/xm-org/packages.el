@@ -12,7 +12,16 @@
 (defconst xm-org-packages
   '(
     org-brain
-    org-autolist
+;;    org-autolist
+    ))
+
+(defun org/init-org ()
+  (use-package org
+    :defer t
+    :config
+    ;; 修复 org M-RET 快捷键
+    (org-defkey org-mode-map (kbd "M-<return>") #'org-meta-return)
+    (org-defkey org-mode-map (kbd "M-RET") #'org-meta-return)
     ))
 
 (defun xm-org/init-org-brain ()
@@ -28,11 +37,11 @@
     (global-set-key (kbd "<f12>") 'org-brain-agenda)
     ))
 
-(defun xm-org/init-org-autolist ()
-  (use-package org-autolist
-    :after org
-    :config
-    (org-autolist-mode +1)
-    ))
+;; (defun xm-org/init-org-autolist ()
+;;   (use-package org-autolist
+;;     :after org
+;;     :config
+;;     (org-autolist-mode +1)
+;;     ))
 
 ;;; packages.el ends here
