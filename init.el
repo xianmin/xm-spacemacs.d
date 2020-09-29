@@ -114,18 +114,19 @@ values."
    ;; List of themes, the first of the list is loaded when spacemacs starts.
    ;; Press <SPC> T n to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
-   dotspacemacs-themes '(spacemacs-light
+   dotspacemacs-themes '(;;spacemacs-light
+                         tango
                          tango-dark
                          )
    ;; If non nil the cursor color matches the state color in GUI Emacs.
    dotspacemacs-colorize-cursor-according-to-state nil
    ;; Default font. `powerline-scale' allows to quickly tweak the mode-line
    ;; size to make separators look not too crappy.
-   ;; dotspacemacs-default-font '("Source Code Pro"
-   ;;                             :size 13
-   ;;                             :weight normal
-   ;;                             :width normal
-   ;;                             :powerline-scale 1.1)
+   dotspacemacs-default-font '("Noto Mono"
+                               :size 16
+                               :weight normal
+                               :width normal
+                               :powerline-scale 1.0)
    ;; The leader key
    dotspacemacs-leader-key "SPC"
    ;; The leader key accessible in `emacs state' and `insert state'
@@ -213,7 +214,7 @@ values."
    ;; Transparency can be toggled through `toggle-transparency'. (default 90)
    dotspacemacs-inactive-transparency 90
    ;; If non nil unicode symbols are displayed in the mode line. (default t)
-   dotspacemacs-mode-line-unicode-symbols t
+   dotspacemacs-mode-line-unicode-symbols nil
    ;; If non nil smooth scrolling (native-scrolling) is enabled. Smooth
    ;; scrolling overrides the default behavior of Emacs which recenters the
    ;; point when it reaches the top or bottom of the screen. (default t)
@@ -326,8 +327,6 @@ you should place your code here."
   (global-set-key (kbd "C-w") 'clipboard-kill-region)
   (global-set-key (kbd "M-w") 'clipboard-kill-ring-save)
 
-  ;; (spacemacs//set-monospaced-font   "DejaVu Sans Mono" "Source Han Sans SC" 15 18) ;; 字体
-
   (setq-default line-spacing 3)  ;; 增大行高
 
   (setq user-full-name "Chen Xianmin"
@@ -413,8 +412,22 @@ you should place your code here."
         ;; '(left-curly-arrow right-curly-arrow) ;; default
         )
 
-  ;; delete-trailing-whitespace while save
-  (add-hook 'before-save-hook 'delete-trailing-whitespace)
+  ;; delete-trailing-whitespace-except-current-line while save
+  ;; https://stackoverflow.com/questions/3533703/emacs-delete-trailing-whitespace-except-current-line
+  (defun delete-trailing-whitespace-except-current-line ()
+    (interactive)
+    (let ((begin (line-beginning-position))
+          (end (line-end-position)))
+      (save-excursion
+        (when (< (point-min) begin)
+          (save-restriction
+            (narrow-to-region (point-min) (1- begin))
+            (delete-trailing-whitespace)))
+        (when (> (point-max) end)
+          (save-restriction
+            (narrow-to-region (1+ end) (point-max))
+            (delete-trailing-whitespace))))))
+  (add-hook 'before-save-hook 'delete-trailing-whitespace-except-current-line)
 
   )
 
@@ -428,13 +441,14 @@ you should place your code here."
  '(custom-safe-themes
    (quote
     ("bffa9739ce0752a37d9b1eee78fc00ba159748f50dc328af4be661484848e476" "fa2b58bb98b62c3b8cf3b6f02f058ef7827a8e497125de0254f56e373abee088" default)))
+ '(evil-want-Y-yank-to-eol t)
  '(org-hugo-auto-set-lastmod t)
  '(org-hugo-default-section-directory "post")
  '(org-hugo-section "post")
  '(org-hugo-use-code-for-kbd t)
  '(package-selected-packages
    (quote
-    (gnu-elpa-keyring-update cdlatex auctex ivy-purpose ivy helm-purpose window-purpose default-theme-theme anki-editor yasnippet org-autolist which-key writegood-mode wc-mode cheat-sh winum org-mime fuzzy emoji-cheat-sheet-plus company-emoji ox-hugo pinyinlib yaml-mode toml-mode racer cargo rust-mode easy-hugo org web-beautify livid-mode skewer-mode simple-httpd json-mode json-snatcher json-reformat js2-refactor multiple-cursors js2-mode js-doc company-tern dash-functional tern coffee-mode helm-company helm-c-yasnippet company-web web-completion-data company-statistics company-anaconda company auto-yasnippet ac-ispell auto-complete deft org-brain yapfify xterm-color ws-butler writeroom-mode window-numbering web-mode volatile-highlights vimrc-mode vi-tilde-fringe uuidgen use-package toc-org tagedit spacemacs-theme spaceline smeargle slim-mode shell-pop scss-mode sass-mode restart-emacs rainbow-delimiters quelpa pyvenv pytest pyenv-mode py-isort pug-mode popwin pip-requirements phpunit phpcbf php-extras php-auto-yasnippets persp-mode pcre2el paradox pangu-spacing orgit org-projectile org-present org-pomodoro org-plus-contrib org-download org-bullets open-junk-file neotree multi-term move-text mmm-mode markdown-toc magit-gitflow macrostep lorem-ipsum live-py-mode linum-relative link-hint less-css-mode info+ indent-guide imenu-list ido-vertical-mode hy-mode hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers highlight-indentation help-fns+ helm-themes helm-swoop helm-pydoc helm-projectile helm-mode-manager helm-make helm-gitignore helm-flx helm-descbinds helm-css-scss helm-ag google-translate golden-ratio gnuplot gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link gh-md flx-ido find-by-pinyin-dired fill-column-indicator fcitx fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu eshell-z eshell-prompt-extras esh-help emmet-mode elisp-slime-nav dumb-jump drupal-mode define-word dactyl-mode cython-mode column-enforce-mode clean-aindent-mode chinese-pyim auto-highlight-symbol auto-compile anaconda-mode aggressive-indent adaptive-wrap ace-window ace-pinyin ace-link ace-jump-helm-line)))
+    (cnfonts gnu-elpa-keyring-update cdlatex auctex ivy-purpose ivy helm-purpose window-purpose default-theme-theme anki-editor yasnippet org-autolist which-key writegood-mode wc-mode cheat-sh winum org-mime fuzzy emoji-cheat-sheet-plus company-emoji ox-hugo pinyinlib yaml-mode toml-mode racer cargo rust-mode easy-hugo org web-beautify livid-mode skewer-mode simple-httpd json-mode json-snatcher json-reformat js2-refactor multiple-cursors js2-mode js-doc company-tern dash-functional tern coffee-mode helm-company helm-c-yasnippet company-web web-completion-data company-statistics company-anaconda company auto-yasnippet ac-ispell auto-complete deft org-brain yapfify xterm-color ws-butler writeroom-mode window-numbering web-mode volatile-highlights vimrc-mode vi-tilde-fringe uuidgen use-package toc-org tagedit spacemacs-theme spaceline smeargle slim-mode shell-pop scss-mode sass-mode restart-emacs rainbow-delimiters quelpa pyvenv pytest pyenv-mode py-isort pug-mode popwin pip-requirements phpunit phpcbf php-extras php-auto-yasnippets persp-mode pcre2el paradox pangu-spacing orgit org-projectile org-present org-pomodoro org-plus-contrib org-download org-bullets open-junk-file neotree multi-term move-text mmm-mode markdown-toc magit-gitflow macrostep lorem-ipsum live-py-mode linum-relative link-hint less-css-mode info+ indent-guide imenu-list ido-vertical-mode hy-mode hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers highlight-indentation help-fns+ helm-themes helm-swoop helm-pydoc helm-projectile helm-mode-manager helm-make helm-gitignore helm-flx helm-descbinds helm-css-scss helm-ag google-translate golden-ratio gnuplot gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link gh-md flx-ido find-by-pinyin-dired fill-column-indicator fcitx fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu eshell-z eshell-prompt-extras esh-help emmet-mode elisp-slime-nav dumb-jump drupal-mode define-word dactyl-mode cython-mode column-enforce-mode clean-aindent-mode chinese-pyim auto-highlight-symbol auto-compile anaconda-mode aggressive-indent adaptive-wrap ace-window ace-pinyin ace-link ace-jump-helm-line)))
  '(paradox-github-token t))
 
 (custom-set-faces
@@ -442,7 +456,15 @@ you should place your code here."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- )
+ '(header-line ((t (:inherit mode-line :background "grey90" :foreground "grey20" :box nil :height 1.5))))
+ '(helm-source-header ((t (:background "#abd7f0" :foreground "black" :weight bold))))
+ '(org-block ((t (:background "#e8e3f0" :foreground "#655370"))))
+ '(org-block-begin-line ((t (:background "#ddd8eb" :foreground "#9380b2"))))
+ '(org-document-title ((t (:foreground "midnight blue" :height 1.5))))
+ '(org-level-1 ((t (:inherit outline-1 :height 1.1))))
+ '(org-level-2 ((t (:inherit outline-2 :height 1.1))))
+ '(org-level-3 ((t (:inherit outline-3 :height 1.05))))
+ '(org-verbatim ((t (:foreground "#21b8c7")))))
 (defun dotspacemacs/emacs-custom-settings ()
   "Emacs custom settings.
 This is an auto-generated function, do not modify its content directly, use
